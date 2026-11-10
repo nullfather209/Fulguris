@@ -290,6 +290,40 @@ abstract class WebBrowserActivity : ThemedBrowserActivity(),
         override fun onInputDeviceChanged(deviceId: Int) {}
     }
 
+
+
+
+
+
+    private fun createCursorController() {
+    iCursorController = CursorController(
+        overlay = iBinding.cursorOverlay,
+        targetProvider = { iCursorTargetOverride ?: currentTabView },
+        uiRootProvider = { iBinding.coordinatorLayout },
+        contentBoundsProvider = { iCursorTargetOverride ?: iBinding.webViewFrame },
+        webContentFocusedProvider = { customView != null || currentTabView?.hasFocus() == true },
+        settings = iCursorSettings,
+        onCursorToggled = { enabled ->
+            application.toast(getString(if (enabled) R.string.cursor_on else R.string.cursor_off))
+            vibrate()
+            if (!enabled) {
+                iBindingToolbarContent.buttonMore.requestFocus()
+            }
+        }
+    )
+
+    // Force cursor mode on at all times for dumbphone D-pad navigation.
+    iCursorController.enable()
+}
+
+/**
+ * Keep the cursor available and always enabled.
+ */
+fun isCursorAvailable(): Boolean = true
+
+
+
+        
     // Options settings menu
     private val iBottomSheet = BottomSheetDialogFragment(supportFragmentManager)
 
