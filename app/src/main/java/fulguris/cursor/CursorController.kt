@@ -368,6 +368,10 @@ class CursorController(
             else -> false
         }
     }
+    
+    // Cursor on: D-pad drives the cursor and select clicks. Independent of [shown].
+    var enabled: Boolean = true
+    private set
 
     private fun isConfirmKey(keyCode: Int): Boolean = when (keyCode) {
         KeyEvent.KEYCODE_DPAD_CENTER,
